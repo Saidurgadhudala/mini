@@ -1,0 +1,26 @@
+{% extends 'homepage.html' %}
+{% block content %}
+{% block addcss %}
+<link rel="stylesheet" href="./update.css"/>
+{% endblock addcss %}
+<div class="container">
+        <form method="POST">
+        <h1>View notes</h1>
+        {% for i in var1 %}
+            <label for="titleField">Title:</label>
+            <input type="text" id="titleField"   name="title" value="{{i[0]}}" />
+
+            <label for="contentField">Content:</label>
+            <textarea id="contentField" class="content-field"  name="content" value="" >{{i[1]}}</textarea>
+            <button>Submit</button>
+            {% endfor %}
+        </form>
+    </div>
+{% endblock content %}
+
+    <!-- Add Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
