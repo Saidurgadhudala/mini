@@ -11,8 +11,19 @@ app=Flask(__name__)
 app.config['SESSION_TYPE']='filesystem'
 excel.init_excel(app)
 Session(app)
-mydb=mysql.connector.connect(host="localhost",user="root",password="anusha@1999",db='spm')
-app.secret_key='anusha@codegnan'
+# mydb=mysql.connector.connect(host="localhost",user="root",password="Saidurga@-2000",db='prm')
+app.secret_key='durgasd1230@gmail.com'
+user=os.environ.get('RDS_USERNAME')
+db=os.environ.get('RD_DB_NAME')
+password=os.enviran.get('RD_PASSWORD')
+host=os.environ.get('RD_HOSTNAME')
+port=os.enciron.get('RD_PORT')
+with mysql.connector.connect(user=user,host=host,db=db,password=password,port=port)as conn:
+    cursor=conn.cursor()
+    cursor.execute('create table  if not exists register (username varchar(50) NOT NULL,password varchar(15) DEFAULT NULL,email varchar(60) DEFAULT NULL,PRIMARY KEY (username),UNIQUE KEY email (email))')
+    cursor.execute('create table if not exists notes(notes_id int NOT NULL AUTO_INCREMENT,title varchar(100) NOT NULL,content text NOT NULL,username varchar(50) NOT NULL,PRIMARY KEY (notes_id),KEY username (username),CONSTRAINT notes_ibfk_1 FOREIGN KEY (username) REFERENCES register (username))')
+    cursor.execute('create table if not exists files(f_id int NOT NULL,extention varchar(10) DEFAULT NULL,filedata longblob,added_by varchar(50) DEFAULT NULL,PRIMARY KEY (f_id),KEY added_by (added_by),CONSTRAINT files_ibfk_1 FOREIGN KEY (added_by) REFERENCES register (username) ON DELETE CASCADE)')
+mydb=mysql.connector.connect(user=user,host=host,db=db,password=password,port=port)
 @app.route('/')
 def index():
     return render_template('title.html')
@@ -187,5 +198,5 @@ def getdata():
     else:
         return redirect(url_for('login'))
 
-
-app.run(debug=True,use_reloader=True)
+if __name__=='__main__':
+    app.run()
